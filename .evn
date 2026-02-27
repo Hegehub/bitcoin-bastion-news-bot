@@ -1,0 +1,4 @@
+BOT_TOKEN=ваш_токен
+CHANNEL_ID=@имя_канала
+ADMIN_IDS=123456789,987654321
+REDIS_URL=redis://localhost:6379/0
