@@ -2,7 +2,8 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
 from services.api_client import CryptoNewsAPIClient
-from redis_cache import get_cached, set_cache
+from redis_cache import get_cache, set_cache
+#from redis_cache import get_cached, set_cache
 from config import GROUP_CHAT_ID
 import logging
 
