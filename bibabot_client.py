@@ -2,7 +2,7 @@ import aiohttp
 import asyncio
 import logging
 from typing import Optional, Dict, List, Any
-from aiohttp_sse_client import EventSource
+from aiohttp_sse_client import client as sse_client  # Исправленный импорт
 
 logger = logging.getLogger(__name__)
 
@@ -184,14 +184,15 @@ class BibabotAPIClient:
         session = await self._get_session()
         url = f"{self.base_url}/api/stream"
         async with session.get(url, headers={"Accept": "text/event-stream"}) as resp:
-            async for event in EventSource(resp.content):
-                if event.event == "news" and event.data:
-                    try:
-                        data = event.json()
-                        # Если callback асинхронный, вызываем через await
-                        if asyncio.iscoroutinefunction(callback):
-                            await callback(data)
-                        else:
-                            callback(data)
-                    except Exception as e:
-                        logger.error(f"Error processing stream event: {e}")
+            # Используем правильный импорт: sse_client.EventSource
+            async with sse_client.EventSource(resp.content) as event_source:
+                async for event in event_source:
+                    if event.event == "news" and event.data:
+                        try:
+                            data = event.json()
+                            if asyncio.iscoroutinefunction(callback):
+                                await callback(data)
+                            else:
+                                callback(data)
+                        except Exception as e:
+                            logger.error(f"Error processing stream event: {e}")
