@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crypto Bot Dashboard</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        .stat { display: inline-block; margin: 20px; padding: 20px; background: #f0f0f0; border-radius: 10px; }
+        .stat h2 { margin: 0; color: #333; }
+        .stat .value { font-size: 3em; font-weight: bold; color: #0066cc; }
+    </style>
+</head>
+<body>
+    <h1>📊 Crypto Bot Statistics</h1>
+    <div class="stat">
+        <h2>Total News</h2>
+        <div class="value">{{ total_news }}</div>
+    </div>
+    <div class="stat">
+        <h2>Triggered News</h2>
+        <div class="value">{{ triggered_news }}</div>
+    </div>
+    <div class="stat">
+        <h2>Published to Channel</h2>
+        <div class="value">{{ published_news }}</div>
+    </div>
+</body>
+</html>
