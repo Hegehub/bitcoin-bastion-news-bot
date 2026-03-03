@@ -2,7 +2,8 @@ import aiohttp
 import asyncio
 import logging
 from typing import Optional, Dict, List, Any
-from sse_client import EventSource  # используем aiohttp-sse-client
+from aiohttp_sse_client import EventSource
+#from sse_client import EventSource  # используем aiohttp-sse-client
 
 logger = logging.getLogger(__name__)
 
