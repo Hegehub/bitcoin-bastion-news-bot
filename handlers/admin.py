@@ -3,7 +3,8 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from middlewares import AdminMiddleware
+from middlewares import AdminCheckMiddleware
+#from middlewares import AdminMiddleware
 from config import TRIGGER_PRICE_CHANGE_PERCENT, TRIGGER_TIMEFRAME_MINUTES
 import config
 import logging
