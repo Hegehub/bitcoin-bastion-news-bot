@@ -2,7 +2,9 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
 from bibabot_client import BibabotAPIClient
+from bibabot_client import BibabotAPIClient
 
+client = BibabotAPIClient()
 router = Router()
 client = BibabotAPIClient()
 
