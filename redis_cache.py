@@ -1,3 +1,4 @@
+import redis.asyncio as redis
 import aioredis
 import json
 from config import REDIS_URL
