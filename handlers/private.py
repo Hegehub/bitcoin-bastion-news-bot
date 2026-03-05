@@ -4,7 +4,8 @@ from aiogram.filters import Command
 from aiogram.enums import ParseMode
 from services.api_client import api_client
 from redis_cache import get_cache, set_cache
-from database import add_user
+from database import add_user, async_session, User, select
+from keyboards import subscription_keyboard
 import logging
 
 router = Router()
@@ -135,8 +136,6 @@ async def cmd_dominance(message: Message):
 
 @router.message(Command("subscribe"))
 async def cmd_subscribe(message: Message):
-    from database import async_session, User, select
-    from keyboards import subscription_keyboard
     async with async_session() as session:
         user = await session.scalar(select(User).where(User.telegram_id == message.from_user.id))
         if not user:
@@ -147,7 +146,6 @@ async def cmd_subscribe(message: Message):
 
 @router.callback_query(F.data.startswith("sub_"))
 async def process_subscription(callback: CallbackQuery):
-    from database import async_session, User, select
     sub_type = callback.data.split("_")[1]
     async with async_session() as session:
         user = await session.scalar(select(User).where(User.telegram_id == callback.from_user.id))
