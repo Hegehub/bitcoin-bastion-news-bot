@@ -7,12 +7,11 @@ from database import async_session, User, select
 class AdminCheckMiddleware(BaseMiddleware):
     async def __call__(
         self,
-        handler: Callable[[Message, Dict[str, Any]], Awaitable[Any]],
+        handler: Callable[[Message | CallbackQuery, Dict[str, Any]], Awaitable[Any]],
         event: Message | CallbackQuery,
         data: Dict[str, Any]
     ) -> Any:
         user_id = event.from_user.id
-        # Проверяем, админ ли в config или в БД
         if user_id in ADMIN_IDS:
             data['is_admin'] = True
         else:
