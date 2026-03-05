@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-def main_keyboard() -> ReplyKeyboardMarkup:
+def main_keyboard(is_admin: bool = False) -> ReplyKeyboardMarkup:
     """Главная reply-клавиатура с основными командами."""
     buttons = [
         [KeyboardButton(text="📰 Последние новости")],
@@ -9,6 +9,11 @@ def main_keyboard() -> ReplyKeyboardMarkup:
         [KeyboardButton(text="🐋 Киты"), KeyboardButton(text="💥 Ликвидации")],
         [KeyboardButton(text="🔔 Подписки"), KeyboardButton(text="📊 Доминация")]
     ]
+    
+    # Если пользователь админ, добавляем кнопку админ-панели
+    if is_admin:
+        buttons.append([KeyboardButton(text="⚙️ Админ панель")])
+    
     return ReplyKeyboardMarkup(
         keyboard=buttons,
         resize_keyboard=True,
@@ -30,14 +35,14 @@ def subscription_keyboard(user) -> InlineKeyboardMarkup:
         text=f"{'✅' if user.subscribed_triggered else '❌'} Триггерные новости",
         callback_data="sub_triggered"
     ))
-    # Кнопка "Назад" для возврата в главное меню
     builder.row(InlineKeyboardButton(text="🔙 Назад", callback_data="back_to_main"))
     return builder.as_markup()
 
 def admin_keyboard() -> InlineKeyboardMarkup:
-    """Админская inline-клавиатура (без изменений)."""
+    """Админская inline-клавиатура."""
     builder = InlineKeyboardBuilder()
     builder.button(text="📊 Статистика", callback_data="admin_stats")
+    builder.button(text="📡 Статус API", callback_data="admin_api_status")
     builder.button(text="⚙️ Настройки триггера", callback_data="admin_settings")
     builder.button(text="📢 Отправить в канал", callback_data="admin_broadcast_channel")
     builder.button(text="📣 Отправить всем", callback_data="admin_broadcast_all")
