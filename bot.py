@@ -7,7 +7,7 @@ from config import BOT_TOKEN
 from handlers import private, group, admin
 from middlewares import AdminCheckMiddleware
 from scheduler import setup_schedulers, scheduler
-from services.api_client import CryptoNewsAPIClient
+from services.api_client import api_client
 from database import init_db
 import redis_cache
 
@@ -22,31 +22,23 @@ dp.include_router(private.router)
 dp.include_router(group.router)
 dp.include_router(admin.router)
 
-# Middleware
+# Middleware для проверки админства
 dp.message.middleware(AdminCheckMiddleware())
+dp.callback_query.middleware(AdminCheckMiddleware())
 
 async def on_startup():
-    """Действия при запуске бота."""
     logger.info("Запуск бота...")
     await init_db()
     await redis_cache.init_redis()
-    
-    # Инициализируем клиент API (он создаст сессию)
-    api_client = CryptoNewsAPIClient()
     await api_client._get_session()
-    
-    # Настраиваем и запускаем планировщик
-    setup_schedulers()
+    setup_schedulers(bot)  # Передаем экземпляр бота в планировщик
     scheduler.start()
     logger.info("Планировщик запущен.")
 
 async def on_shutdown():
-    """Действия при остановке бота."""
     logger.info("Остановка бота...")
     scheduler.shutdown()
     await redis_cache.close_redis()
-    # Закрываем сессию API клиента
-    from services.api_client import api_client
     await api_client.close()
     await dp.storage.close()
     await bot.session.close()
