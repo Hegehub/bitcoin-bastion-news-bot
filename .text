@@ -1,5 +1,5 @@
 ultra-crypto-bot/
-├── .env
+├── .env.example
 ├── requirements.txt
 ├── config.py
 ├── bot.py
@@ -8,14 +8,13 @@ ultra-crypto-bot/
 ├── keyboards.py
 ├── middlewares.py
 ├── scheduler.py
-├── web.py
+├── web.py                 # Заглушка (WebApp отключен)
+├── utils.py
 ├── locales/
 │   ├── en/
-│   │   └── messages.po
+│   │   └── messages.ftl
 │   └── ru/
-│       └── messages.po
-├── templates/
-│   └── index.html
+│       └── messages.ftl
 ├── handlers/
 │   ├── __init__.py
 │   ├── private.py
@@ -24,5 +23,5 @@ ultra-crypto-bot/
 └── services/
     ├── __init__.py
     ├── api_client.py
-    ├── trigger_detector.py
-    └── price_history.py  # Новый файл для получения исторических цен (без Binance)
+    ├── price_history.py
+    └── trigger_detector.py
