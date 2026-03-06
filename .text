@@ -1,11 +1,28 @@
-aiogram==3.17.0
-aiohttp==3.10.10
-sqlalchemy==2.0.36
-asyncpg==0.30.0
-redis==5.2.0
-apscheduler==3.10.4
-fastapi==0.115.6
-uvicorn==0.34.0
-jinja2==3.1.4
-python-dotenv==1.0.1
-fluent.runtime==0.4.0
+ultra-crypto-bot/
+├── .env.example
+├── requirements.txt
+├── config.py
+├── bot.py
+├── database.py
+├── redis_cache.py
+├── keyboards.py          # обновлён – добавлена кнопка WebApp
+├── middlewares.py
+├── scheduler.py
+├── web.py                # FastAPI для WebApp (работает на localhost)
+├── utils.py
+├── locales/
+│   ├── en/
+│   │   └── messages.ftl
+│   └── ru/
+│       └── messages.ftl
+├── handlers/
+│   ├── __init__.py
+│   ├── private.py        # полный, без reaction_keyboard
+│   ├── group.py
+│   └── admin.py
+└── services/
+    ├── __init__.py
+    ├── api_client.py
+    ├── cryptorank_client.py
+    ├── price_history.py
+    └── trigger_detector.py
