@@ -4,7 +4,6 @@ from database import User
 from config import WEBAPP_URL
 
 def reaction_keyboard(news_id: int) -> InlineKeyboardMarkup:
-    """Клавиатура с реакциями под новостями в группе."""
     builder = InlineKeyboardBuilder()
     builder.button(text="👍", callback_data=f"react_like_{news_id}")
     builder.button(text="👎", callback_data=f"react_dislike_{news_id}")
@@ -46,6 +45,11 @@ def main_menu_keyboard(language: str = 'en') -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="🔬 Исслед", callback_data="menu_research"),
             InlineKeyboardButton(text="⚙️ Настройки", callback_data="menu_settings")
         )
+    # Кнопка Web App
+    builder.row(InlineKeyboardButton(
+        text="📊 Dashboard" if language == 'en' else "📊 Дашборд",
+        web_app=WebAppInfo(url=WEBAPP_URL)
+    ))
     return builder.as_markup()
 
 def subscription_keyboard(user: User, language: str = 'en') -> InlineKeyboardMarkup:
