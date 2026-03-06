@@ -25,17 +25,17 @@ dp.include_router(admin.router)
 dp.message.middleware(AdminCheckMiddleware())
 
 async def on_startup():
-    logger.info("Запуск бота...")
-    await init_db()
+    logger.info("Starting bot...")
+    await init_db()                     # инициализация PostgreSQL
     await redis_cache.init_redis()
-    await api_client._get_session()  # инициализация сессии API
-    await price_history._get_session()  # инициализация сессии CoinGecko
+    await api_client._get_session()
+    await price_history._get_session()
     setup_schedulers()
     scheduler.start()
-    logger.info("Планировщик запущен.")
+    logger.info("Scheduler started.")
 
 async def on_shutdown():
-    logger.info("Остановка бота...")
+    logger.info("Shutting down bot...")
     scheduler.shutdown()
     await redis_cache.close_redis()
     await api_client.close()
