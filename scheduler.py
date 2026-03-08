@@ -7,7 +7,7 @@ from services.trigger_detector import trigger_detector
 from database import async_session, News, add_news_to_db, select, User
 from handlers.group import publish_all_news_to_group
 from config import CHANNEL_ID, GROUP_CHAT_ID, TRIGGER_TIMEFRAME_MINUTES
-from bot import bot
+#from bot import bot
 from utils import escape_html
 import asyncio
 
