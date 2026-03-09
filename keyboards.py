@@ -1,7 +1,19 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
+from urllib.parse import urlsplit
+import logging
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from database import User
 from config import WEBAPP_URL
+
+logger = logging.getLogger(__name__)
+
+_parsed_webapp_url = urlsplit(WEBAPP_URL) if WEBAPP_URL else None
+HAS_VALID_HTTPS_WEBAPP_URL = bool(
+    _parsed_webapp_url and _parsed_webapp_url.scheme == "https" and _parsed_webapp_url.netloc
+)
+
+if not HAS_VALID_HTTPS_WEBAPP_URL:
+    logger.warning("WEBAPP_URL is not HTTPS or not set; dashboard web app button will be hidden.")
 
 def reaction_keyboard(news_id: int) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
@@ -45,11 +57,10 @@ def main_menu_keyboard(language: str = 'en') -> InlineKeyboardMarkup:
             InlineKeyboardButton(text="🔬 Исслед", callback_data="menu_research"),
             InlineKeyboardButton(text="⚙️ Настройки", callback_data="menu_settings")
         )
-    # Кнопка Web App
-    builder.row(InlineKeyboardButton(
-        text="📊 Dashboard" if language == 'en' else "📊 Дашборд",
-        web_app=WebAppInfo(url=WEBAPP_URL)
-    ))
+    # Кнопка Web App (Telegram требует HTTPS для web_app URL)
+    dashboard_text = "📊 Dashboard" if language == 'en' else "📊 Дашборд"
+    if HAS_VALID_HTTPS_WEBAPP_URL:
+        builder.row(InlineKeyboardButton(text=dashboard_text, web_app=WebAppInfo(url=WEBAPP_URL)))
     return builder.as_markup()
 
 def subscription_keyboard(user: User, language: str = 'en') -> InlineKeyboardMarkup:
