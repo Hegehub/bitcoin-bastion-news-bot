@@ -71,4 +71,4 @@ SUPPORTED_LANGUAGES = ["en", "ru"]
 CRYPTORANK_API_KEY = os.getenv("CRYPTORANK_API_KEY")
 CRYPTORANK_BASE_URL = "https://api.cryptorank.io/v2"
 
-WEBAPP_URL = os.getenv("WEBAPP_URL", "http://localhost:8000/webapp")
+WEBAPP_URL = os.getenv("WEBAPP_URL", "")
