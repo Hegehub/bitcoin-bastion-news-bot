@@ -13,10 +13,57 @@ from bot import bot
 from utils import escape_html
 import asyncio
 from datetime import datetime, timedelta
+from services.ml_trainer import ml_trainer
+from services.backtest_engine import backtest_engine
 
 logger = logging.getLogger(__name__)
 
 scheduler = AsyncIOScheduler()
+
+async def scheduled_ml_retrain():
+    """Ежедневное переобучение ML-модели."""
+    logger.info("Running scheduled ML retraining...")
+    await ml_trainer.retrain_if_needed()
+
+async def scheduled_backtest_report():
+    """Еженедельный отчёт по бэктестингу (можно отправлять админам)."""
+    logger.info("Running weekly backtest...")
+    results = await backtest_engine.run_backtest(days=7, use_ml=True)
+    # Отправляем результаты администраторам
+    from bot import bot
+    from config import ADMIN_IDS
+    report = (
+        f"📊 Weekly Backtest Report\n\n"
+        f"Total news: {results['total']}\n"
+        f"With price data: {results['with_price']}\n"
+        f"Accuracy (sentiment): {results['accuracy']:.1f}%\n"
+        f"ML Accuracy: {results.get('ml_accuracy', 0):.1f}%\n\n"
+        f"Top categories:\n" +
+        "\n".join([f"• {k}: {v}" for k, v in list(results['by_category'].items())[:5]])
+    )
+    for admin_id in ADMIN_IDS:
+        try:
+            await bot.send_message(admin_id, report, parse_mode='HTML')
+        except Exception as e:
+            logger.error(f"Failed to send backtest report to {admin_id}: {e}")
+
+def setup_schedulers():
+    # ... существующие задачи ...
+
+    scheduler.add_job(
+        scheduled_ml_retrain,
+        trigger=CronTrigger(hour=4, minute=0),  # каждый день в 4:00
+        id="ml_retrain",
+        replace_existing=True
+    )
+
+    scheduler.add_job(
+        scheduled_backtest_report,
+        trigger=CronTrigger(day_of_week='mon', hour=9, minute=0),  # каждый понедельник в 9:00
+        id="backtest_report",
+        replace_existing=True
+    )
+
 
 async def scheduled_news_check():
     logger.info("Running scheduled news check...")
