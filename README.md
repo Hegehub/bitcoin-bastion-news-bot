@@ -113,21 +113,6 @@ graph LR
 
 Все настройки задаются через переменные окружения в файле .env. Основные параметры:
 
-Переменная Описание Пример
-BOT_TOKEN Токен Telegram-бота 123456:ABC-DEF1234
-CHANNEL_ID ID канала для публикации триггерных новостей @my_channel или -1001234567890
-GROUP_CHAT_ID ID группы для всех новостей -1001234567890
-ADMIN_IDS ID администраторов через запятую 123456789,987654321
-DATABASE_URL Строка подключения к PostgreSQL postgresql+asyncpg://user:pass@localhost:5432/botdb
-REDIS_URL Строка подключения к Redis redis://localhost:6379/0
-CRYPTORANK_API_KEY Ключ CryptoRank API (ваш ключ)
-TWITTER_BEARER_TOKEN Bearer token Twitter API (опционально) (ваш ключ)
-LLM_PROVIDER Провайдер LLM: groq или openai groq
-GROQ_API_KEY / OPENAI_API_KEY Ключи соответствующих сервисов (ваш ключ)
-TRIGGER_PRICE_CHANGE_PERCENT Порог изменения цены для триггера (%) 2.0
-TRIGGER_TIMEFRAME_MINUTES Таймфрейм для анализа (минуты) 30
-DEFAULT_LANGUAGE Язык по умолчанию (en или ru) ru
-
 Полный список — в файле .env.example.
 
 ---
